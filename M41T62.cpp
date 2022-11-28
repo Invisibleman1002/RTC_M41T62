@@ -363,6 +363,25 @@ void RTC_M41T62::alarmEnable(bool onOff){
   WIRE.endTransmission();
 }
 
+/*
+Check to see if an alarm is enabled.
+11/07/2022  Trey Aughenbaugh
+*/
+int RTC_M41T62::alarmEnabled()
+{
+  int currentByte;
+
+  WIRE.beginTransmission(M41T62_ADDRESS);
+  WIRE._I2C_WRITE(M41T62_SQWEN_AMO);
+  WIRE.endTransmission();
+  WIRE.requestFrom(M41T62_ADDRESS, 1);
+  currentByte = WIRE._I2C_READ();
+
+  currentByte = bitRead(currentByte, 7);
+
+  return currentByte;
+}
+
 void RTC_M41T62::alarmRepeat(int mode){ // set alarm repeat mode
   int byte1, byte2, byte3, byte4;
   
@@ -464,6 +483,32 @@ void RTC_M41T62::alarmSet(const DateTime& dt) {
   WIRE._I2C_WRITE(bin2bcd(dt.second()));
   WIRE._I2C_WRITE(0);
   WIRE.endTransmission();
+}
+
+/*
+Grab the Datetime of the current set Alarm
+11/10/2022  Trey Aughenbaugh
+*/
+DateTime RTC_M41T62::alarmGet()
+{
+
+  WIRE.beginTransmission(M41T62_ADDRESS);
+  WIRE._I2C_WRITE(7);
+  WIRE.endTransmission();
+
+  WIRE.requestFrom(M41T62_ADDRESS, 8, 1); // 7
+  uint16_t y = bcd2bin(WIRE._I2C_READ()) + 2000;
+  WIRE._I2C_READ(); // Skip Calibration
+  WIRE._I2C_READ(); // Skip watchdog
+  uint8_t m = bcd2bin(WIRE._I2C_READ() & 0x1F);
+  uint8_t d = bcd2bin(WIRE._I2C_READ() & 0x3F);
+
+  uint8_t hh = bcd2bin(WIRE._I2C_READ() & 0x3F);
+  uint8_t mm = bcd2bin(WIRE._I2C_READ() & 0x7F);
+
+  uint8_t ss = bcd2bin(WIRE._I2C_READ() & 0x7F);
+  pointerReset();
+  return DateTime(y, m, d, hh, mm, ss);
 }
 
 int RTC_M41T62::checkFlags(){
