@@ -7,6 +7,11 @@ To download. click the DOWNLOADS button to the right, and rename the uncompresse
 Place the RTClib folder in your *arduinosketchfolder*/libraries/ folder. 
 You may need to create the libraries subfolder if its your first library. Restart the IDE.
 
+2022 Update by Trey
+Added alarm get functions
+- DateTime alarmGet(): Get the DateTime of the alarm set.
+- int alarmEnabled(): Get 0/1 if an alarm is currently enabled.
+
 Added alarm functions
 - alarmSet(DateTime): Sets alarm to desired time. Uses DateTime variable. Basically the same as adjust() but sets the alarm time instead.
 - alarmRepeat(int): Returns or sets alarm repeat mode
