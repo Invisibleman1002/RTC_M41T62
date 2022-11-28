@@ -10,8 +10,14 @@ You may need to create the libraries subfolder if its your first library. Restar
 2022 Update by Trey.
 Added alarm get functions
 - DateTime alarmGet(): Get the DateTime of the alarm set.
+```
+DateTime AlarmTime = rtc.alarmGet();
+```
 - int alarmEnabled(): Get 0/1 if an alarm is currently enabled.
-
+```
+int en = rtc.alarmEnabled(); // if there is no alarm enabled, like a first start, then we need to set one!
+printf("alarmEnable: %d\n", en);
+```
 Added alarm functions
 - alarmSet(DateTime): Sets alarm to desired time. Uses DateTime variable. Basically the same as adjust() but sets the alarm time instead.
 - alarmRepeat(int): Returns or sets alarm repeat mode
