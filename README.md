@@ -18,6 +18,12 @@ DateTime AlarmTime = rtc.alarmGet();
 int en = rtc.alarmEnabled(); // if there is no alarm enabled, like a first start, then we need to set one!
 printf("alarmEnable: %d\n", en);
 ```
+Check the OF bit.  Good to know on first start or if backup battery fails.
+```
+int rtc_OF = rtc.checkOF(); // Returns 1 if oscillator fail is set, 0 if not.
+```
+  
+  
 Added alarm functions
 - alarmSet(DateTime): Sets alarm to desired time. Uses DateTime variable. Basically the same as adjust() but sets the alarm time instead.
 - alarmRepeat(int): Returns or sets alarm repeat mode
