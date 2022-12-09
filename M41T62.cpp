@@ -527,6 +527,30 @@ int RTC_M41T62::checkFlags(){
   }
 }
 
+/*
+Check if OF bit is set.  Might be useful to know you need to request a time update.
+12/01/2022  Trey Aughenbaugh
+*/
+int RTC_M41T62::checkOF()
+{
+  // Returns 1 if  oscillator fail is set, 0 if not.
+  int byte1;
+
+  WIRE.beginTransmission(M41T62_ADDRESS);
+  WIRE._I2C_WRITE(M41T62_FLAGS);
+  WIRE.endTransmission();
+  WIRE.requestFrom(M41T62_ADDRESS, 1);
+  byte1 = WIRE._I2C_READ();
+  if (bitRead(byte1, 2) == 1)
+  {
+    return 1;
+  }
+  else
+  {
+    return 0;
+  }
+}
+
 void RTC_M41T62::pointerReset(){
   // reset address pointer to 0 per datasheet note pg23
   WIRE.beginTransmission(M41T62_ADDRESS);
