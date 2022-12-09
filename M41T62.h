@@ -95,7 +95,8 @@ public:
     static void alarmSet(const DateTime &dt);
     static DateTime alarmGet(); // added by Trey Aughenbaugh
     int checkFlags();
-
+    int checkOF(); // added by Trey Aughenbaugh
+    
     // Functions for testing only:
     static void printAllBits();
     static void printBits(byte myByte);
